@@ -5,6 +5,7 @@ import com.revature.models.DTOs.IncomingReimbursementDTO;
 import com.revature.models.Reimbursement;
 import com.revature.models.User;
 import com.revature.services.ReimbursementService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/reimbursement")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
+
 public class ReimbursementController {
 
     private ReimbursementService rs;
@@ -95,24 +97,41 @@ public class ReimbursementController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllReimbursements(){
-        return ResponseEntity.ok(rs.getAllReimbursement());
+    public ResponseEntity<Object> getAllReimbursements(HttpSession session){
+        String role = (String) session.getAttribute("role");
+
+        if(role!= null && role.equals("manager")) {
+            return ResponseEntity.ok(rs.getAllReimbursement());
+        } else{
+            return ResponseEntity.status(401).body("You do not have authorization to perform this action.");
+        }
 
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<Object> getReimbursementsByStatus(@PathVariable String status){
+    public ResponseEntity<Object> getReimbursementsByStatus(@PathVariable String status, HttpSession session){
+        String role = (String) session.getAttribute("role");
         try{
-            return ResponseEntity.ok(rs.getReimbursementsByStatus(status));
+            if(role!=null && role.equals("manager")){
+                return ResponseEntity.ok(rs.getReimbursementsByStatus(status));
+            } else{
+                return ResponseEntity.status(401).body("You do not have authorization to perform this action.");
+            }
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
     @PatchMapping("/pending/{reId}")
-    public ResponseEntity<Object> resolveReimbursement(@RequestBody String newStatus, @PathVariable int reId){
+    public ResponseEntity<Object> resolveReimbursement(@RequestBody String newStatus, @PathVariable int reId, HttpSession session){
+        String role = (String) session.getAttribute("role");
         try{
-            return ResponseEntity.ok(rs.updatePendingReimbursementStatus(newStatus, reId));
+            if(role!=null && role.equals("manager")){
+                return ResponseEntity.ok(rs.updatePendingReimbursementStatus(newStatus, reId));
+            }else{
+                return ResponseEntity.status(401).body("You do not have authorization to perform this action.");
+            }
+
         }catch(IllegalArgumentException e){
             return ResponseEntity.status(400).body(e.getMessage());
         }

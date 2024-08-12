@@ -1,15 +1,17 @@
 package com.revature.models.DTOs;
 
+import java.math.BigDecimal;
+
 public class IncomingReimbursementDTO {
     private String description;
-    private int amount;
+    private BigDecimal amount;
     private String status;
     private int userId;
 
     public IncomingReimbursementDTO() {
     }
 
-    public IncomingReimbursementDTO(String description, int amount, String status, int userId) {
+    public IncomingReimbursementDTO(String description, BigDecimal amount, String status, int userId) {
         this.description = description;
         this.amount = amount;
         this.status = status;
@@ -24,11 +26,11 @@ public class IncomingReimbursementDTO {
         this.description = description;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

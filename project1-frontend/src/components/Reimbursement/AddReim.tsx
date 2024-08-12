@@ -62,20 +62,23 @@ export const AddReim: React.FC = () => {
     }
 
     return(
-        <div className="container">
-            <h3>Add a new reimbursement here!</h3>
-            {showAlert && <div className="alert alert-danger">{errorMessage}</div>}
-            {showSuccessAlert && <div className="alert alert-success">{successMessage}</div>}
-            <div className="form-group mt-4">
-                <input type="number" className="form-control" placeholder="amount" name="amount" onChange={storeValues}/>
-            </div>
-            <div className="form-group mt-4">
-                <textarea name="description" className="form-control" placeholder="description" onChange={storeValues}></textarea>
-            </div>
-            <Button variant="outline-info" className="m-4" onClick={add}>Add</Button>
-            <Button variant="outline-info" className="m-4" onClick={() => navigate("/reim")}>Reimbursements</Button>
+        <div className="d-flex justify-content-center align-items-center vh-100 background">
+            <div className="container border border bg-light text-center w-50 p-4">
+                <h3 className="mt-5">Add a new reimbursement</h3>
+                <p className="mt-3">Please provide an amount and description for the reimbursement.</p>
+                {showAlert && <div className="alert alert-danger">{errorMessage}</div>}
+                {showSuccessAlert && <div className="alert alert-success">{successMessage}</div>}
+                <div className="form-group mt-4 w-25 mx-auto">
+                    <input type="number" className="form-control" placeholder="amount" name="amount" onChange={storeValues}/>
+                </div>
+                <div className="form-group mt-4 w-75 mx-auto">
+                    <textarea name="description" className="form-control" placeholder="description" onChange={storeValues}></textarea>
+                </div>
+                <Button variant="outline-info" className="m-4" onClick={add}>Add</Button>
+                <Button variant="outline-info" className="m-4" onClick={() => navigate("/reim")}>Reimbursements</Button>
 
-            
+                
+            </div>
         </div>
     )
 

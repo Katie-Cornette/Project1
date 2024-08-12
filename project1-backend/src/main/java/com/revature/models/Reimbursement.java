@@ -3,6 +3,8 @@ package com.revature.models;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "reimbursement")
 @Component
@@ -15,8 +17,8 @@ public class Reimbursement {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private int amount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
 
     @Column(nullable = false, columnDefinition = "varchar(255) default 'PENDING'")
     private String status;
@@ -28,14 +30,14 @@ public class Reimbursement {
     public Reimbursement() {
     }
 
-    public Reimbursement(int reimbld, String description, int amount, User user) {
+    public Reimbursement(int reimbld, String description, BigDecimal  amount, User user) {
         this.reimbld = reimbld;
         this.description = description;
         this.amount = amount;
         this.user = user;
     }
 
-    public Reimbursement(int reimbld, String description, int amount, String status, User user) {
+    public Reimbursement(int reimbld, String description, BigDecimal amount, String status, User user) {
         this.reimbld = reimbld;
         this.description = description;
         this.amount = amount;
@@ -59,11 +61,11 @@ public class Reimbursement {
         this.description = description;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

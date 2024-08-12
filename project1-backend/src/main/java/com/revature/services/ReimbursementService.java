@@ -6,6 +6,7 @@ import com.revature.models.Reimbursement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class ReimbursementService {
         if(newReimbursement.getDescription() == null || newReimbursement.getDescription().equals("")){
             throw new IllegalArgumentException("Please provide a description");
         }
-        if(newReimbursement.getAmount() <= 0){
+        if((newReimbursement.getAmount()).compareTo(BigDecimal.ZERO) <=0){
             throw new IllegalArgumentException("Please enter a positive amount");
         }
         Reimbursement r = rDAO.save(newReimbursement);
@@ -44,9 +45,7 @@ public class ReimbursementService {
             throw new IllegalArgumentException("User does not exist");
         }
         List<Reimbursement> reimbursements = rDAO.findByStatusAndUserUserId(status, userId);
-        if(reimbursements.isEmpty()){
-            throw new IllegalArgumentException("You have no " + status + " reimbursements.");
-        }
+
         return reimbursements;
     }
 
@@ -67,10 +66,17 @@ public class ReimbursementService {
             throw new IllegalArgumentException("Please provide a description for the reimbursement");
         }
         Optional<Reimbursement> existingReimbursement = rDAO.findById(id);
+        Reimbursement updatedReim;
         if(existingReimbursement.isPresent()){
             Reimbursement updatedRe = existingReimbursement.get();
-            updatedRe.setDescription(newDescription);
-            return rDAO.save(updatedRe);
+            if((updatedRe.getStatus()).equals("pending")) {
+                updatedRe.setDescription(newDescription);
+                updatedReim = rDAO.save(updatedRe);
+            }
+            else{
+                throw new IllegalArgumentException("Can not change the reimbursement status since it is already " + updatedRe.getStatus());
+            }
+            return updatedReim;
         }
         else{
             throw new IllegalArgumentException("Reimbursement with " + id + " does not exist");

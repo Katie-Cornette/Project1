@@ -3,25 +3,22 @@ import { ReimInterface } from "../../interfaces/ReimInterface"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { store } from "../../globalData/store"
-import { Button } from "react-bootstrap"
-import { Reim } from "./Reim"
+import { AllReim } from "./AllReim"
 import "../../App.css"
 
-export const ReimContainer: React.FC = () => {
-
-    const [reims, setReims] = useState<ReimInterface[]>([])
-    const [pendingreims, setPendingReims] = useState<ReimInterface[]>([])
+export const AllReimContainer: React.FC = () => {
+    const [allreims, setAllReims] = useState<ReimInterface[]>([])
 
     const navigate = useNavigate()
 
     useEffect(()=>{
         getAllReims()
-    },[])
+    })
 
     const getAllReims = async() => {
-        const response = await axios.get("http://localhost:8080/reimbursement/" + store.loggedInUser.userId)
+        const response = await axios.get("http://localhost:8080/reimbursement", {withCredentials:true})
 
-        setReims(response.data)
+        setAllReims(response.data)
 
         console.log(response.data)
     }
@@ -31,13 +28,13 @@ export const ReimContainer: React.FC = () => {
             
             <div className="navbar navbar-dark bg-dark w-100">
                 
-                    <a className="nav-item nav-link text-white ms-5 " href="#"  onClick={() => navigate("/")}>
+                    <a className="nav-item nav-link text-white ms-4 " href="#"  onClick={() => navigate("/")}>
                         Login
                     </a>
                     {store.loggedInUser.role==="manager" ? <a className="nav-item nav-link text-white me-4" href="#" onClick={() => navigate("/users")}>
                         Users
                     </a> : <></>}
-                    <a className="nav-item nav-link text-white " href="#" onClick={() => navigate("/addReim")}>
+                    <a className="nav-item nav-link text-white me-4" href="#" onClick={() => navigate("/addReim")}>
                         Add Reimbursement
                     </a>
                 
@@ -51,14 +48,15 @@ export const ReimContainer: React.FC = () => {
                     :
                     <></>
                     }
-                    <a className="nav-item nav-link text-white me-5" href="#" onClick={() => navigate("/profile")}>
+                    <a className="nav-item nav-link text-white me-4" href="#" onClick={() => navigate("/profile")}>
                         Profile
                     </a>
                     
                 </div>
-            <div className="container containerbackground ">
-                <Reim reims={reims}></Reim>
-            </div>
+                <div className="container containerbackground">
+                    <AllReim reims={allreims}></AllReim>
+                </div>
+            
            
         </div>
     )

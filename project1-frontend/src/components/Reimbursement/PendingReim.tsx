@@ -1,11 +1,12 @@
+import { Alert, Button, Table } from "react-bootstrap"
+import { store } from "../../globalData/store"
+import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { ReimInterface } from "../../interfaces/ReimInterface"
-import { store } from "../../globalData/store"
-import { Alert, Button, Table } from "react-bootstrap"
-import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
-export const Reim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
+export const PendingReim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
+    
     useEffect(()=>{
         console.log(reims)
     })
@@ -28,7 +29,6 @@ export const Reim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
             role: ""
         }
     })
-
 
     const validateInputs = async (): Promise<boolean> => {
           
@@ -71,22 +71,18 @@ export const Reim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
             setErrorMessage("Please provide a description")
             setShowAlert(true)
         }
-
     }
 
     const cancelDescription = () => {
         console.log("Button was clicked!!!")
         setReimOptions(false)
     }
-    
 
     
     return(
         <div className="container">
             <h3 className="mt-4 mb-4">{store.loggedInUser.firstname}'s Reimbursements:</h3>
 
-
-            
             {showAlert && (
                 <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
                     {errorMessage}
@@ -107,10 +103,10 @@ export const Reim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
                 <></>
                 
             }
-
-
+            
             <div className="navbar navbar-dark bg-dark">
-            <a className="nav-item nav-link text-white ms-4" href="#">
+                
+                <a className="nav-item nav-link text-white ms-4" href="#">
                     See: 
                 </a>
                 <a className="nav-item nav-link text-white " href="#" onClick={() => navigate("/pendingReim")}>
@@ -147,10 +143,8 @@ export const Reim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
                             <td>{reim.status}</td>
                             <td>
                                 
-                                        <Button variant="info" className="m-2"> Update</Button>
-                                   
-                                
-                                
+                                <Button variant="info" className="m-2"> Update</Button>
+                                    
                             </td>
                         </tr>
                     ))}
@@ -161,5 +155,3 @@ export const Reim: React.FC<{reims: ReimInterface[]}> = ({reims}) => {
     )
 
 }
-
-

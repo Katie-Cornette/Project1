@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { Alert, Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import "../../App.css"
 
 export const Register: React.FC = () => {
 
@@ -31,7 +32,7 @@ export const Register: React.FC = () => {
         }
 
         try {
-            const usernameCheck = await axios.get("http://localhost:8080/users/" + user.username)
+            const usernameCheck = await axios.get("http://localhost:8080/users/" + user.username, {withCredentials:true})
             if (usernameCheck.data.exists) {
                 setErrorMessage("Username is already taken. Please choose a different username.")
                 setShowAlert(true)
@@ -82,33 +83,35 @@ export const Register: React.FC = () => {
         })
     }
     return(
-        <div className="container">
-            <h3>Register for a new account here!</h3>
-            {showAlert && (
-                <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-                    {errorMessage}
-                </Alert>
-            )}
+        <div className="d-flex justify-content-center align-items-center vh-100 background">
+            <div className="container border border bg-light text-center w-50 p-4">
+                <h3>Register for a new account here!</h3>
+                {showAlert && (
+                    <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
+                        {errorMessage}
+                    </Alert>
+                )}
 
-        
-            <div className="container border border-info bg-light "> 
-                <div className="form-group mb-4 mt-4">
-                    <input type="text" className="form-control" placeholder="First name" name="firstName" onChange={storeValues} />
+            
+                <div className="container border bg-light mt-4"> 
+                    <div className="form-group mb-4 mt-4">
+                        <input type="text" className="form-control" placeholder="First name" name="firstName" onChange={storeValues} />
+                    </div>
+                    <div className="form-group  mb-4 mt-4">
+                        <input type="text" className="form-control" placeholder="Last name" name="lastName" onChange={storeValues} />
+                    </div>
+                    <div className="form-group  mb-4 mt-4">
+                        <input type="text" className="form-control" placeholder="username" name="username" onChange={storeValues} />
+                    </div>
+                    <div className="form-group mb-4 mt-4">
+                        <input type="password" className="form-control" placeholder="password" name="password" onChange={storeValues} />
+                    </div>
+                    <Button variant="outline-info" className="m-4" onClick={register}>Create</Button>
+                    <Button variant="outline-info" className="m-4" onClick={() => navigate("/")}>Login</Button>
                 </div>
-                <div className="form-group  mb-4 mt-4">
-                    <input type="text" className="form-control" placeholder="Last name" name="lastName" onChange={storeValues} />
-                </div>
-                <div className="form-group  mb-4 mt-4">
-                    <input type="text" className="form-control" placeholder="username" name="username" onChange={storeValues} />
-                </div>
-                <div className="form-group mb-4 mt-4">
-                    <input type="password" className="form-control" placeholder="password" name="password" onChange={storeValues} />
-                </div>
-                <Button variant="outline-info" className="m-4" onClick={register}>Create</Button>
-                <Button variant="outline-info" className="m-4" onClick={() => navigate("/")}>Login</Button>
-            </div>
        
            
+            </div>
         </div>
     )
 }

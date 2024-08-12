@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { store } from "../../globalData/store"
 import { Register } from "./Register"
 import { Button } from "react-bootstrap"
+import "../../App.css"
 
 export const Login: React.FC = () => {
     
@@ -46,19 +47,19 @@ export const Login: React.FC = () => {
     }
 
     return(
-        <div className="login">
-            <div className="container">
-                <h1>Welcome to the Employee Reimbursement System</h1>
-                <h3>Login in to Create and View Reimbursements</h3>
+        <div className="d-flex justify-content-center align-items-center vh-100 background">
+            <div className="container border border bg-light text-center w-50 p-4">
+                <h1 className="mt-5">Welcome to the Employee Reimbursement System</h1>
+                <h5 className="mt-3">Login in to Create and View Reimbursements</h5>
 
-                <div className="form-group mb-4 mt-4">
+                <div className="form-group mb-4 mt-4 w-50 mx-auto">
                     <input type="text" className="form-control" placeholder="username" name="username" onChange={storeValues} />
                 </div>
-                <div className="form-group">
+                <div className="form-group w-50 mx-auto">
                     <input type="password" className="form-control" placeholder="password" name="password" onChange={storeValues} />
                 </div>
-                <Button variant="outline-info" className="mt-4 me-4" onClick={login}>Login</Button>
-                <Button variant="outline-info" className="mt-4" onClick={() => navigate("/register")}>Create Account</Button>
+                <Button variant="outline-info" className="m-4" onClick={login}>Login</Button>
+                <Button variant="outline-info" className="m-4" onClick={() => navigate("/register")}>Create Account</Button>
 
             </div>
 
